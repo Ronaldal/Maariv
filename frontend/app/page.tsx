@@ -25,8 +25,7 @@ export default async function HomePage() {
             כותרות אחרונות
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-            נתונים ממוק מקומי עם שליפה בצד השרת דרך Route Handlers ומדיניות cache שונה לכל סוג
-            בקשה.
+            נתונים מה־API בצד השרת (ASP.NET) עם שליפה בצד Next ומדיניות cache שונה לכל סוג בקשה.
           </p>
         </div>
       </section>

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace backend.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/tags")]
 public sealed class TagsController : ControllerBase
 {
     private readonly ContentDataService _data;

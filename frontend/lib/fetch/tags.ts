@@ -1,20 +1,25 @@
-import { getRequestOrigin } from "@/lib/internal-origin";
+import { getBackendBaseUrl } from "@/lib/fetch/api-base";
+import { mapTagFromApi } from "@/lib/fetch/map-api";
 import { logServerError } from "@/lib/logger";
 import type { Tag } from "@/types/tag";
 
 /**
- * Loads all tags. Longer revalidate than articles list — taxonomy changes rarely in the mock.
+ * Loads all tags from the .NET API.
  */
 export async function fetchTags(): Promise<Tag[]> {
-  const origin = await getRequestOrigin();
+  const base = getBackendBaseUrl();
   try {
-    const res = await fetch(`${origin}/api/mock/tags`, {
+    const res = await fetch(`${base}/api/tags`, {
       next: { revalidate: 300, tags: ["tags"] },
     });
     if (!res.ok) {
       throw new Error(`Tags list failed: ${res.status}`);
     }
-    return (await res.json()) as Tag[];
+    const data: unknown = await res.json();
+    if (!Array.isArray(data)) {
+      throw new Error("Tags list: expected array");
+    }
+    return data.map(mapTagFromApi);
   } catch (err) {
     logServerError(err, "fetchTags");
     throw err;
@@ -22,19 +27,24 @@ export async function fetchTags(): Promise<Tag[]> {
 }
 
 /**
- * Loads one tag. Uses default fetch caching (force-cache) for stable mock payloads.
+ * Loads one tag by id.
  */
 export async function fetchTagById(id: string): Promise<Tag | null> {
-  const origin = await getRequestOrigin();
+  const numericId = Number.parseInt(id, 10);
+  if (!Number.isFinite(numericId)) {
+    return null;
+  }
+  const base = getBackendBaseUrl();
   try {
-    const res = await fetch(`${origin}/api/mock/tags/${encodeURIComponent(id)}`, {
-      cache: "force-cache",
+    const res = await fetch(`${base}/api/tags/${numericId}`, {
+      cache: "no-store",
     });
     if (res.status === 404) return null;
     if (!res.ok) {
       throw new Error(`Tag ${id} failed: ${res.status}`);
     }
-    return (await res.json()) as Tag;
+    const data: unknown = await res.json();
+    return mapTagFromApi(data);
   } catch (err) {
     logServerError(err, `fetchTagById(${id})`);
     throw err;

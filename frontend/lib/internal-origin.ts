@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
 /**
- * Builds the site origin for same-origin `fetch` calls to App Router Route Handlers.
+ * Builds the public site origin (e.g. for share links) from the incoming request.
  * Uses request headers when available; otherwise falls back to env or localhost.
  */
 export async function getRequestOrigin(): Promise<string> {

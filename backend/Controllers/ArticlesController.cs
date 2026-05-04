@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace backend.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/articles")]
 public sealed class ArticlesController : ControllerBase
 {
     private readonly ContentDataService _data;

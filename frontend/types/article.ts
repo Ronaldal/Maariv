@@ -1,5 +1,5 @@
 /**
- * Article entity used across article pages, lists, and mock data.
+ * Article entity used across article pages and lists.
  * `id` is a string so it aligns with URL params and JSON without coercion.
  */
 export interface Article {

@@ -66,7 +66,7 @@ export default async function TagPage({ params }: PageProps) {
               </p>
             ) : (
               <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
-                רשימת כתבות עם התגית במוק הנתונים.
+                רשימת כתבות עם התגית.
               </p>
             )}
           </div>
