@@ -9,21 +9,32 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { fetchArticles } from "@/lib/fetch/articles";
+import { fetchTags } from "@/lib/fetch/tags";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const articles = await fetchArticles();
+  const [articles, tags] = await Promise.all([fetchArticles(), fetchTags()]);
+
+  const tag33 = tags.find((t) => t.id === "33");
+  const tag17 = tags.find((t) => t.id === "17");
+  const title33 = tag33?.name ?? "בנימין נתניהו";
+  const title17 = tag17?.name ?? "חמאס";
 
   return (
     <div className="flex flex-1 flex-col">
       <section className="border-b border-border bg-muted/30 py-8 sm:py-12">
         <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
-          <p className="text-sm font-medium text-muted-foreground sm:text-base">דף הבית</p>
+          <p className="text-sm font-medium text-muted-foreground sm:text-base">
+            מעריב · דף הבית
+          </p>
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
             כותרות אחרונות
           </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            הידיעות והנושאים שמובילים את השיחה — כפי שמופיעים במדור החדשות.
+          </p>
         </div>
       </section>
 
@@ -72,25 +83,43 @@ export default async function HomePage() {
           ))}
         </ul>
 
-        <div className="rounded-lg border border-dashed border-border p-4 text-center text-sm text-muted-foreground">
-          <p>
-            ניסיון מידלוור:{" "}
-            {/* Full document navigation: middleware redirects /tags/33 externally (see article-tag-list). */}
+        <section
+          className="rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8"
+          aria-labelledby="topics-heading"
+        >
+          <div className="mb-6 border-b border-border pb-5 text-center sm:text-right">
+            <h2
+              id="topics-heading"
+              className="text-lg font-semibold tracking-tight text-foreground sm:text-xl"
+            >
+              נושאים נבחרים
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              עומק הכותרות לפי נושא — בחירת נושא תפתח את כל הכתבות המשויכות אליו.
+            </p>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-10 sm:gap-y-2">
+            {/* Full document navigation: middleware redirects /tags/33 to maariv.co.il */}
             <a
               href="/tags/33"
-              className="font-medium text-foreground underline-offset-2 hover:underline"
+              className={cn(
+                buttonVariants({ variant: "link" }),
+                "h-auto min-h-0 px-0 py-0 text-base font-semibold sm:text-lg"
+              )}
             >
-              /tags/33
-            </a>{" "}
-            מפנה לאתר מעריב החיצוני.
-          </p>
-          <p className="mt-2">
-            תגית לדוגמה:{" "}
-            <Link href="/tags/17" className="font-medium text-foreground underline-offset-2 hover:underline">
-              /tags/17
+              {title33}
+            </a>
+            <Link
+              href="/tags/17"
+              className={cn(
+                buttonVariants({ variant: "link" }),
+                "h-auto min-h-0 px-0 py-0 text-base font-semibold sm:text-lg"
+              )}
+            >
+              {title17}
             </Link>
-          </p>
-        </div>
+          </div>
+        </section>
       </section>
     </div>
   );
