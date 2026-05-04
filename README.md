@@ -52,11 +52,6 @@ frontend/     Next.js app — `app/`, `components/`, `lib/fetch/`
 backend/      ASP.NET Core — `Controllers/`, `Services/`, `Data/`
 ```
 
-## Documentation
-
-- **[EXAM_INTERVIEW_PREP.md](./EXAM_INTERVIEW_PREP.md)** — overview + interview notes  
-- **[FRONTEND_QUESTION_BANK.md](./FRONTEND_QUESTION_BANK.md)** — frontend question bank  
-
 ## License
 
 Private / educational — adjust as needed.
