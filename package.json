@@ -1,0 +1,15 @@
+{
+  "name": "maariv",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w frontend",
+    "build": "npm run build -w frontend",
+    "start": "npm run start -w frontend",
+    "lint": "npm run lint -w frontend",
+    "dev:backend": "dotnet watch run --project backend/backend.csproj",
+    "build:backend": "dotnet build backend/backend.csproj"
+  }
+}

@@ -1,0 +1,8 @@
+[
+  { "id": 1, "name": "חדשות פוליטיקה", "isActive": true },
+  { "id": 2, "name": "חדשות ספורט", "isActive": true },
+  { "id": 3, "name": "חדשות כלכלה", "isActive": false },
+  { "id": 4, "name": "חינוך ובתי ספר", "isActive": true },
+  { "id": 5, "name": "בריאות ורפואה", "isActive": true },
+  { "id": 6, "name": "טכנולוגיה", "isActive": true }
+]
