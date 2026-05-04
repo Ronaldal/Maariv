@@ -24,9 +24,6 @@ export default async function HomePage() {
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
             כותרות אחרונות
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-            נתונים מה־API בצד השרת (ASP.NET) עם שליפה בצד Next ומדיניות cache שונה לכל סוג בקשה.
-          </p>
         </div>
       </section>
 
@@ -78,9 +75,13 @@ export default async function HomePage() {
         <div className="rounded-lg border border-dashed border-border p-4 text-center text-sm text-muted-foreground">
           <p>
             ניסיון מידלוור:{" "}
-            <Link href="/tags/33" className="font-medium text-foreground underline-offset-2 hover:underline">
+            {/* Full document navigation: middleware redirects /tags/33 externally (see article-tag-list). */}
+            <a
+              href="/tags/33"
+              className="font-medium text-foreground underline-offset-2 hover:underline"
+            >
               /tags/33
-            </Link>{" "}
+            </a>{" "}
             מפנה לאתר מעריב החיצוני.
           </p>
           <p className="mt-2">

@@ -16,7 +16,7 @@ type AdditionalArticlesProps = {
 
 /**
  * Server component loaded inside `Suspense` so the main article can stream first.
- * Uses the same catalog fetch as listings (`revalidate` on `fetchArticles`).
+ * Uses the same catalog fetch as listings (`fetchArticles`, `cache: "no-store"`).
  */
 export default async function AdditionalArticles({
   currentArticleId,

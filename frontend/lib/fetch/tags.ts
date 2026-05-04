@@ -4,13 +4,13 @@ import { logServerError } from "@/lib/logger";
 import type { Tag } from "@/types/tag";
 
 /**
- * Loads all tags from the .NET API.
+ * Loads all tags from the .NET API (`no-store` — same rationale as {@link fetchArticles}).
  */
 export async function fetchTags(): Promise<Tag[]> {
   const base = getBackendBaseUrl();
   try {
     const res = await fetch(`${base}/api/tags`, {
-      next: { revalidate: 300, tags: ["tags"] },
+      cache: "no-store",
     });
     if (!res.ok) {
       throw new Error(`Tags list failed: ${res.status}`);

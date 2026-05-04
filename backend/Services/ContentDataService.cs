@@ -11,15 +11,19 @@ public sealed class ContentDataService
         ReadCommentHandling = JsonCommentHandling.Disallow,
     };
 
+    private readonly IWebHostEnvironment _env;
+    private readonly ILogger<ContentDataService> _logger;
     private readonly Lazy<IReadOnlyList<ArticleDto>> _articles;
     private readonly Lazy<IReadOnlyList<TagDto>> _tags;
     private readonly Lazy<IReadOnlyList<CategoryDto>> _categories;
 
-    public ContentDataService(IWebHostEnvironment env)
+    public ContentDataService(IWebHostEnvironment env, ILogger<ContentDataService> logger)
     {
-        _articles = new Lazy<IReadOnlyList<ArticleDto>>(() => Load<ArticleDto>(env, "jsonData.txt"));
-        _tags = new Lazy<IReadOnlyList<TagDto>>(() => Load<TagDto>(env, "jsonDataTags.txt"));
-        _categories = new Lazy<IReadOnlyList<CategoryDto>>(() => Load<CategoryDto>(env, "jsonDataCategories.txt"));
+        _env = env;
+        _logger = logger;
+        _articles = new Lazy<IReadOnlyList<ArticleDto>>(() => Load<ArticleDto>("jsonData.txt"));
+        _tags = new Lazy<IReadOnlyList<TagDto>>(() => Load<TagDto>("jsonDataTags.txt"));
+        _categories = new Lazy<IReadOnlyList<CategoryDto>>(() => Load<CategoryDto>("jsonDataCategories.txt"));
     }
 
     public IReadOnlyList<ArticleDto> GetArticles() => _articles.Value;
@@ -46,14 +50,23 @@ public sealed class ContentDataService
             .ToList();
     }
 
-    private static IReadOnlyList<T> Load<T>(IWebHostEnvironment env, string fileName)
+    private IReadOnlyList<T> Load<T>(string fileName)
     {
-        var path = Path.Combine(env.ContentRootPath, "Data", fileName);
+        var path = Path.Combine(_env.ContentRootPath, "Data", fileName);
         if (!File.Exists(path))
+        {
+            _logger.LogError("Data file not found: {Path}", path);
             throw new FileNotFoundException($"Data file not found: {path}");
+        }
 
+        _logger.LogInformation("Reading dataset {File} from {Path}", fileName, path);
         var json = File.ReadAllText(path);
-        var list = JsonSerializer.Deserialize<List<T>>(json, JsonOptions);
-        return list ?? new List<T>();
+        var list = JsonSerializer.Deserialize<List<T>>(json, JsonOptions) ?? new List<T>();
+        _logger.LogInformation(
+            "Loaded {Count} {RecordType} record(s) from {File}",
+            list.Count,
+            typeof(T).Name,
+            fileName);
+        return list;
     }
 }

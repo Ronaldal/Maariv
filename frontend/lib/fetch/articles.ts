@@ -4,7 +4,8 @@ import { logServerError } from "@/lib/logger";
 import type { Article } from "@/types/article";
 
 /**
- * Loads all articles from the .NET API. Uses ISR-style revalidation for the catalog.
+ * Loads all articles from the .NET API. Uses `no-store` like single-article fetches so the
+ * catalog does not stay stale when the API is down (no Next.js Data Cache for this URL).
  */
 export async function fetchArticles(): Promise<Article[]> {
   const base = getBackendBaseUrl();
